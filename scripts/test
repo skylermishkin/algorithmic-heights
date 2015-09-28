@@ -1,0 +1,24 @@
+#!/usr/local/bin/python3
+
+'''
+Runs the entire test suite.
+'''
+import sys
+import os
+import unittest
+# annoying hack to prepend src dir to python path
+sys.path.insert(0, os.path.join(
+    # project root directory
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    'src'
+))
+
+
+# import all `TestCase`s
+from fibo.tests import *
+
+
+# if this is being run as a script
+if __name__ == '__main__':
+    # run the tests
+    unittest.main()

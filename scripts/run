@@ -1,0 +1,66 @@
+#!/usr/local/bin/python3
+
+'''
+Command line tool for testing a given problem on a given input file.
+First argument must be the problem id.
+Second argument must be the path to the input file.
+Remaining arguments are passed to the problem's main function.
+'''
+
+# python imports
+import sys
+import os
+from importlib import import_module
+# annoying hack to prepend src dir to python path
+sys.path.insert(0, os.path.join(
+    # project root directory
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    'src'
+))
+
+
+# if this is being run as a script
+if __name__ == '__main__':
+    # try to get first argument
+    try:
+        problem_id = sys.argv[1]
+    except IndexError:
+        raise RuntimeError('must pass problem id as first argument')
+    # try to get second argument
+    try:
+        in_file_path = sys.argv[2]
+    except IndexError:
+        raise RuntimeError('must pass input file path as second argument')
+
+    # try to get problem's module
+    try:
+        import_module('{}'.format(problem_id))
+    except ImportError:
+        raise ValueError('no {} module has been implemented'.format(problem_id))
+    # try to get problem's main module
+    try:
+        module = import_module('{}.main'.format(problem_id))
+    except ImportError:
+        raise ValueError(
+            '{} does not include a "main" submodule'.format(problem_id)
+        )
+    # try to get main function exported by problem's main module
+    try:
+        main = module.main
+    except AttributeError:
+        raise AttributeError(
+            '{}.main does not export a `main` function'.format(problem_id)
+        )
+    # ensure that `in_file_path` is actually a file
+    if not os.path.isfile(in_file_path):
+        raise RuntimeError('"{}" is not a file path'.format(in_file_path))
+
+    # get input file contents
+    with open(in_file_path) as in_file:
+        contents = in_file.read()
+
+    # pass file contents and any remaining CLI arguments to main
+    output = main(contents, *sys.argv[3:])
+
+    # print output
+    print(output)
