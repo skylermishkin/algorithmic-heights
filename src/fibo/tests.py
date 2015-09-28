@@ -1,13 +1,29 @@
+# python imports
 import unittest
-from main import fib
+from random import random, randint
+# local imports
+from .main import fibo
+
 
 class TestFib(unittest.TestCase):
+    '''
+    Test suite for `fibo` function.
+    '''
+    def test_negative_input(self):
+        for i in range(100):
+            self.assertRaises(
+                ValueError,
+                lambda: fibo(randint(-100, -1))
+            )
 
-    def test_fib_with_negative_input(self):
-        self.assertRaises(ValueError, lambda: fib(-1))
+    def test_decimal_input(self):
+        for i in range(100):
+            decimal = 100 * random()
+            if decimal != 0:
+                self.assertRaises(
+                    ValueError,
+                    lambda: fibo(decimal)
+                )
 
-    def test_fib_with_sample_input(self):
-        self.assertEqual(fib(6), 8)
-
-if __name__ == '__main__':
-    unittest.main()
+    def test_sample_input(self):
+        self.assertEqual(fibo(6), 8)
