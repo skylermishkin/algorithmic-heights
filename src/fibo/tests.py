@@ -2,7 +2,7 @@
 import unittest
 from random import random, randint
 # local imports
-from .main import fibo
+from .util import fibo
 
 
 class TestFib(unittest.TestCase):
