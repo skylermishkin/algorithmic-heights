@@ -1,7 +1,7 @@
 def fib(n):
+    a = [0, 1]
     if n < 0:
         raise ValueError("Argument must be positive")
-    if n == 0 or n == 1:
-        return n
-    else:
-        return fib(n - 1) + fib(n - 2)
+    for i in range(2, n):
+            a.append(a[i-1] + a[i - 2])
+    return a[n]
