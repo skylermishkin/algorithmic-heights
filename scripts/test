@@ -16,6 +16,7 @@ sys.path.insert(0, os.path.join(
 
 # import all `TestCase`s
 from fibo.tests import *
+from bins.tests import *
 
 
 # if this is being run as a script
