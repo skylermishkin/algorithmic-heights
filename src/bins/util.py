@@ -4,12 +4,14 @@ def binarySearch(array, target):
     Assumes that the given array is sorted.
     '''
     length = len(array)
+	if (length < 2):	# in case where target does not exist in array
+		return -1
     halfLength = length // 2
     comparator = array[halfLength]
 
     if target == comparator:
         return halfLength
-    elif target < comparator:
+    elif target < comparator:  # cut left
         return binarySearch(array[:halfLength], target)
-    else:
-        return halfLength + binarySearch(array)
+    else:	# cut right
+        return halfLength + binarySearch(array[halfLength:], target)
